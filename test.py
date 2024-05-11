@@ -18,6 +18,10 @@ print(f"   잔액: {money}원                ")
 print("                     ")
 print("┗━━━━━━━━━━━━━━━━━━━┛")
 
+print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+print('        1.이름으로 송금')
+print('        1.이름으로 송금')
+print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")    
 accounts = {}  # 계좌 정보를 저장할 딕셔너리
 
 my_dict = {
@@ -28,12 +32,24 @@ my_dict = {
 
 result_list = []
 
-for key, value in my_dict.items():
-    result_list.append([key] + value)
+# # 딕셔너리의 값을 하나씩 직접 비교
+# for item in my_dict:
+#     print(item)
 
-print(result_list)
+# # 딕셔너리를 0번부터 끝까지 비교
+# for i in my_dict.items():
+#     print(i)
 
-list_length = len(result_list)
+# # 딕셔너리 -> 리스트 
+# for key, value in my_dict.items():
+#     result_list.append([key] + value)
 
-for i in range(list_length):
-    print(result_list[i][0])
+# print(result_list)
+
+# list_length = len(result_list)
+
+# for i in range(list_length):
+#     print(result_list[i][0])
+
+if (my_dict.get(1)):
+    print(my_dict.get(1))
