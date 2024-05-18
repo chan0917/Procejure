@@ -250,8 +250,12 @@ def login():
             if all_account[customer_account][1] == customer_password:
                 lobby()
             print('비밀번호가 일치하지 않습니다.')
+        customer_account = 0
+        print('비밀번호 입력을 5회 실패하였습니다.\n5분 후 다시 접속하여 주시길 바랍니다.')
+        input("계속하려면 Enter 키를 누르세요...")
+        start()
     customer_account = 0
-    print('비밀번호 입력을 5회 실패하였습니다.\n5분 후 다시 접속하여 주시길 바랍니다.')
+    print('등록되지 않은 계좌번호입니다. 다시 시도하세요.')
     input("계속하려면 Enter 키를 누르세요...")
     start()
 
