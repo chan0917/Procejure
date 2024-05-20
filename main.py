@@ -282,7 +282,7 @@ def lobby():
     print('       7.개좌 개설\t8.개좌 해지\t9.입금')
     print('       0.개발자   \t2.개좌 해지\t3.입금')
     print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-    print('로비', all_account)
+    print('DEBUG로비', all_account)
     work(int(input()))
 
 

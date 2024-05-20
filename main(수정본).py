@@ -1,8 +1,8 @@
 import random
 import time
-all_account = {} # 0.이름, 1.비밀번호, 2.잔액
+all_account = {} # 0.이름, 1.비밀번호, 2.잔액, 3.법인 대표, 4.담당직원
 account =[] # 모든 계좌번호
-customer_account = 0
+customer_account = 0 #로그인 한뒤에 쓸 계좌번호
 def Generate_Random_Numbers():#[기능완성] 계좌번호 생성기
 
     new_number = random.randint(10000, 99999)  
@@ -27,7 +27,7 @@ def Make_Account(): #[기능완성] 1.1, 1.3번 개인 계좌 개설
             first_cost += 10000 
 
         accountNumber = Generate_Random_Numbers()
-        all_account[accountNumber] = [customer_name,customer_password, first_cost]
+        all_account[accountNumber] = [customer_name,customer_password, first_cost, '개인계좌', '개인계좌']
         print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
         print(f'            계좌번호: {accountNumber}')
         print(f'            이름: {customer_name}')
@@ -52,12 +52,14 @@ def Delete_Account(): #[기능완성] 1.2번 개인 계좌 해지
         lobby()
     else:
         print('비밀번호 틀림')
+
         input("계속하려면 Enter 키를 누르세요...")
         lobby()    
     
 
 def Check_Account(): #[기능완성] 2번 개인 계좌 확인: 잔액
     print(f'잔액: {all_account[customer_account][2]}')
+
     input("계속하려면 Enter 키를 누르세요...")
     lobby()
 
@@ -67,6 +69,7 @@ def Deposit_Account(): #[기능완성] 2번 개인 계좌 입금
     cost = digit()
     all_account[customer_account][2] += cost
     print('입금 완료')
+
     input("계속하려면 Enter 키를 누르세요...")
     lobby()    
 
@@ -76,14 +79,37 @@ def Withdraw_Account(): #[기능완성] 2번 개인 계좌 출금
     cost = digit()
     all_account[customer_account][2] -= cost
     print('출금 완료')
+    
     input("계속하려면 Enter 키를 누르세요...")
     lobby() 
 
 def Make_Corporate_Account(): #[미구현] 3번
     global all_account
-    print('기능없음')
+    customer_name = str(input('이름을 입력하세요: '))
+    customer_password = (input('비밀번호를 설정하세요: '))
+    master_name = (input('대표자 이름을 입력하세요: '))
+    administer_name = (input('담당직원 이름을 입력하세요: '))
+    print('최초 입금액 10,000원 이상을 입금하세요.')
+    first_cost = digit()
+
+    if first_cost >= 10000:
+
+        first_cost += 100000 
+
+        accountNumber = Generate_Random_Numbers()
+        all_account[accountNumber] = [customer_name,customer_password, first_cost, master_name, administer_name]
+        print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+        print(f'            계좌번호: {accountNumber}')
+        print(f'            이름: {customer_name}')
+        print(f'            비밀번호: {customer_password}')
+        print(f'            잔액: {first_cost}')
+        print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+    else: 
+        print("최초 입금액 10,000원 이상이 필요합니다. 다시 시도하세요.")
+    
     input("계속하려면 Enter 키를 누르세요...")
-    lobby()
+    start()
 
 def Select_Make_Account(): #[분기점][기능완성] 계좌 개설 분기점
     global all_account
@@ -185,7 +211,7 @@ def Debug_print_accounts():
 def work(bank_work):
 
     global all_account
-    all_account[10000] = ['test', '0000', 0] #여기서 돈을 초기화 하니 주의
+    all_account[10000] = ['test', '0000', 0] #여기서 돈을 초기화 하니 디버깅시 주의
     all_account[10001] = ['test2', '0000', 0]
     if bank_work == '1':
         Select_Make_Account()
@@ -307,3 +333,5 @@ start()
 # Transfer_With_Account, Transfer_With_Money 함수 수정
 
 # Delete_Account 수정
+
+# 법인모드 만들어서 로그인이나 계좌생성에 차별점을 준뒤에 법인모드일경우 계좌해지만 다르게 하면될듯 4번과 5번이 비어있는게 아니면 법인이니 더 입력해라고 하기?
