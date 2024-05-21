@@ -44,12 +44,30 @@ def Make_Account(): #[기능완성] 1.1, 1.3번 개인 계좌 개설
 def Delete_Account(): #[기능완성] 1.2번 개인 계좌 해지
     global all_account
     input_password = input('계좌를 해지려변 비밀번호를 입력하세요: ')
-    if all_account[customer_account][1] == input_password:
-        del all_account[customer_account]
-        print('계좌해지 성공')
 
-        input("계속하려면 Enter 키를 누르세요...")
-        lobby()
+    if all_account[customer_account][1] == input_password:
+
+        if all_account[customer_account][3] != '개인계좌': #법인계좌인 겨우 3번과 4번비교
+            input_master_name = input('계좌 대표자의 이름을 입력하세요: ')
+            input_administer_name = input('담당직원의 이름을 입력하세요: ')
+
+            if all_account[customer_account][3] == input_master_name and all_account[customer_account][4] == input_administer_name:
+                del all_account[customer_account]
+                print('계좌해지 성공')
+
+                input("계속하려면 Enter 키를 누르세요...")
+                lobby()
+            else:
+                print('비밀번호 틀림')
+
+                input("계속하려면 Enter 키를 누르세요...")
+                lobby()
+        else:    #일반계좌이니 그냥 진행
+            del all_account[customer_account]
+            print('계좌해지 성공')
+
+            input("계속하려면 Enter 키를 누르세요...")
+            lobby()
     else:
         print('비밀번호 틀림')
 
@@ -83,7 +101,7 @@ def Withdraw_Account(): #[기능완성] 2번 개인 계좌 출금
     input("계속하려면 Enter 키를 누르세요...")
     lobby() 
 
-def Make_Corporate_Account(): #[미구현] 3번
+def Make_Corporate_Account(): #[기능구현] 3번
     global all_account
     customer_name = str(input('이름을 입력하세요: '))
     customer_password = (input('비밀번호를 설정하세요: '))
@@ -200,6 +218,28 @@ def Transfer_Money(): #[분기점][기능완성] 6번 송금 분기점
         input("계속하려면 Enter 키를 누르세요...")
         lobby()
 
+def Administor_Manage():
+    global all_account
+    # 적당히 비밀번호 입력 
+    print('은행 정산을 시작합니다.')     
+
+    bank_accounts = len(all_account)
+    idle_customer = 0
+    corporate_customer = 0
+    bank_money = 0
+
+    for account_number, info in all_account.items():
+        name, password, money, master, admin = info
+        bank_money += money
+        if master != '개인계좌':
+            idle_customer += 1
+        else:
+            corporate_customer += 1
+    
+    print(bank_accounts, idle_customer, corporate_customer, bank_money)
+    input("계속하려면 Enter 키를 누르세요...")
+    lobby()
+
 def Debug_print_accounts():
     print("계좌 목록:")
     for account_number, name in all_account.items():
@@ -209,10 +249,6 @@ def Debug_print_accounts():
     lobby()
 
 def work(bank_work):
-
-    global all_account
-    all_account[10000] = ['test', '0000', 0] #여기서 돈을 초기화 하니 디버깅시 주의
-    all_account[10001] = ['test2', '0000', 0]
     if bank_work == '1':
         Select_Make_Account()
 
@@ -232,15 +268,6 @@ def work(bank_work):
     elif bank_work == '6':
         Transfer_Money()
 
-    elif bank_work == '7':
-        Deposit_Account()
-
-    elif bank_work == '8':
-        Deposit_Account()
-
-    elif bank_work == '9':
-        Deposit_Account()
-
     elif bank_work == '0':
         Debug_print_accounts()
     
@@ -250,10 +277,12 @@ def work(bank_work):
 
 def lobby():
     print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+    print("            지누 은행에 오신것을 환영합니다 ")
+    print("            원하시는 서비스를 선택해 주세요. ")
+    print("")
     print('       1.계좌 개설\t2.계좌 해지\t3.계좌 확인')
+    print("")
     print('       4.계좌 입금\t5.개좌 출금\t6.계좌 이체')
-    print('       7.개좌 개설\t8.개좌 해지\t9.입금')
-    print('       0.개발자   \t2.개좌 해지\t3.입금')
     print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
     print('로비', all_account)
     work(input())
@@ -291,14 +320,23 @@ def logout():
     start()
 
 def start():
+    global all_account
+    all_account[10000] = ['test', '0000', 0, '개인계좌', '개인계좌'] #여기서 돈을 초기화 하니 디버깅시 주의
+    all_account[10001] = ['test2', '0000', 0, 'EAE', 'U']
+
     print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-    print('                1.로그인  2.계좌 개설 ')
+    print("            지누 은행에 오신것을 환영합니다 ")
+    print("            원하시는 서비스를 선택해 주세요. ")
+    print("")
+    print('       1.로그인   \t2.계좌 개설\t3.관리자 모드')  
     print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
     bank_work = input()
     if bank_work == '1':
         login()
-    else:
+    elif bank_work == '2':
         Select_Make_Account()
+    else:
+        Administor_Manage()
 
 start()
 
