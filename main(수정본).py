@@ -5,15 +5,15 @@ account =[] # 모든 계좌번호
 customer_account = 0 #로그인 한뒤에 쓸 계좌번호
 bank_log = [] # 돈이 이동하는 기록들을 저장 
 
-def Generate_Random_Numbers():#[기능완성] 계좌번호 생성기
-
+def Generate_Random_Numbers():#[완료] 계좌번호 생성기
     new_number = random.randint(10000, 99999)  
     if new_number not in account:  
         account.append(new_number)
         return new_number
     else:
         return Generate_Random_Numbers()
-def Generate_Log(work, account, money, other_account = ''): 
+    
+def Generate_Log(work, account, money, other_account = ''): #[완료] 로그생성
     """
     로그를 생성하는 함수\n
     자기 계좌, 금액, 다른사람 계좌\n
@@ -23,23 +23,19 @@ def Generate_Log(work, account, money, other_account = ''):
         3: [이체]로그 생성.
     """
     global bank_log
-    print("DEBUG 로그 생성")
     if work == 1:
-        deposit_string = f"\x1b[32m' + '       [입금] {account} {money}원' + '\x1b[0m"
+        deposit_string = f"\x1b[36m       [입금] {account} {money}원\x1b[0m"
         bank_log.append(deposit_string)
-        print(deposit_string)
 
     elif work == 2:
-        deposit_string = f"\x1b[32m' + '       [출금] {account} {money}원' + '\x1b[0m"
+        deposit_string = f"\x1b[31m       [출금] {account} {money}원\x1b[0m"
         bank_log.append(deposit_string)
-        print(deposit_string)
         
     elif work == 3:
-        deposit_string = f"\x1b[32m' + '       [이체] {account} to {other_account} {money}' + '\x1b[0m"
+        deposit_string = f"\x1b[32m       [이체] {account} to {other_account} {money}\x1b[0m"
         bank_log.append(deposit_string)
-        print(deposit_string)
 
-def Make_Account(): #[기능완성] 1.1, 1.3번 개인 계좌 개설
+def Make_Account(): #[완료] 1.1, 1.3번 개인 계좌 개설
     global all_account
     print(all_account)
     customer_name = str(input('이름을 입력하세요: '))
@@ -68,7 +64,7 @@ def Make_Account(): #[기능완성] 1.1, 1.3번 개인 계좌 개설
     input("계속하려면 Enter 키를 누르세요...")
     start()
 
-def Delete_Account(): #[기능완성] 1.2번 개인 계좌 해지
+def Delete_Account(): #[완료] 1.2번 개인 계좌 해지
     global all_account
     input_password = input('계좌를 해지려변 비밀번호를 입력하세요: ')
 
@@ -80,56 +76,90 @@ def Delete_Account(): #[기능완성] 1.2번 개인 계좌 해지
 
             if all_account[customer_account][3] == input_master_name and all_account[customer_account][4] == input_administer_name:
                 del all_account[customer_account]
-                print('계좌해지 성공')
+                print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+                print(f'           계좌가 해지되었습니다          ')
+                print(f'          처음 화면으로 돌아갑니다          ')
+                print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
                 input("계속하려면 Enter 키를 누르세요...")
-                lobby()
+                start()
             else:
-                print('비밀번호 틀림')
+                print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+                print(f'           비밀번호가 틀렸습니다          ')
+                print(f'            다시 시도해 주십시오         ')
+                print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
                 input("계속하려면 Enter 키를 누르세요...")
                 lobby()
         else:    #일반계좌이니 그냥 진행
             del all_account[customer_account]
-            print('계좌해지 성공')
+            print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            print(f'           계좌가 해지되었습니다          ')
+            print(f'          처음 화면으로 돌아갑니다          ')
+            print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+            print('')
 
             input("계속하려면 Enter 키를 누르세요...")
             lobby()
     else:
-        print('비밀번호 틀림')
+        print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+        print(f'           비밀번호가 틀렸습니다          ')
+        print(f'            다시 시도해 주십시오         ')
+        print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
         input("계속하려면 Enter 키를 누르세요...")
-        lobby()    
+        start()    
     
-def Check_Account(): #[기능완성] 2번 개인 계좌 확인: 잔액
+def Check_Account(): #[완료] 2번 개인 계좌 확인: 잔액
     print(f'잔액: {all_account[customer_account][2]}')
+    print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+    print(f'           이름: {all_account[customer_account][0]}          ')
+    print(f'           계좌번호: {customer_account}          ')
+    print(f'           잔액: {all_account[customer_account][2]}         ')
+    print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
     input("계속하려면 Enter 키를 누르세요...")
     lobby()
 
-def Deposit_Account(): #[기능완성] 2번 개인 계좌 입금
+def Deposit_Account(): #[완료] 2번 개인 계좌 입금
     global all_account
     print('입금액을 입력하세요: ',end = '')
     cost = digit()
     all_account[customer_account][2] += cost
     Generate_Log(1, customer_account, cost)
-    print('입금 완료')
+    print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+    print(f'      입금이 성공적으로 완료되었습니다      ')
+    print(f'           입금액: {cost}          ')
+    print(f'           잔액: {all_account[customer_account][2]}         ')
+    print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
     input("계속하려면 Enter 키를 누르세요...")
     lobby()    
 
-def Withdraw_Account(): #[기능완성] 2번 개인 계좌 출금
+def Withdraw_Account(): #[완료] 2번 개인 계좌 출금
     global all_account
     print('출금액을 입력사에요: ', end = '')
     cost = digit()
-    all_account[customer_account][2] -= cost
-    Generate_Log(2, customer_account, cost)
-    print('출금 완료')
-    
+    if (all_account[customer_account][2] >= cost):
+
+        all_account[customer_account][2] -= cost
+        Generate_Log(2, customer_account, cost)
+        print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+        print(f'      출금이 성공적으로 완료되었습니다      ')
+        print(f'           입금액: {cost}          ')
+        print(f'           잔액: {all_account[customer_account][2]}         ')
+        print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+    else:
+        print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+        print(f'           출금에 실패하였습니다           ')
+        print(f'                잔액부족          ')
+        print(f'           잔액: {all_account[customer_account][2]}         ')
+        print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
     input("계속하려면 Enter 키를 누르세요...")
     lobby() 
 
-def Make_Corporate_Account(): #[기능구현] 3번
+def Make_Corporate_Account(): #[완료] 3번
     global all_account
     customer_name = str(input('이름을 입력하세요: '))
     customer_password = (input('비밀번호를 설정하세요: '))
@@ -147,6 +177,8 @@ def Make_Corporate_Account(): #[기능구현] 3번
         print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
         print(f'            계좌번호: {accountNumber}')
         print(f'            이름: {customer_name}')
+        print(f'            법인 대표 이름: {master_name}')
+        print(f'            관리자 이름: {administer_name}')
         print(f'            비밀번호: {customer_password}')
         print(f'            잔액: {first_cost}')
         print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
@@ -157,7 +189,7 @@ def Make_Corporate_Account(): #[기능구현] 3번
     input("계속하려면 Enter 키를 누르세요...")
     start()
 
-def Select_Make_Account(): #[분기점][기능완성] 계좌 개설 분기점
+def Select_Make_Account(): #[분기점][완료] 계좌 개설 분기점
     global all_account
     print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
     print('       1.개인 계좌 개설')
@@ -174,9 +206,15 @@ def Select_Make_Account(): #[분기점][기능완성] 계좌 개설 분기점
         Make_Corporate_Account()
         
     else:
+        print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+        print('            오류')     
+        print('   유효하지 않은 입력입니다.')     
+        print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+        input("계속하려면 Enter 키를 누르세요...")
+
         start()
 
-def Transfer_With_Name(): #[미구현] 이름으로 송금
+def Transfer_With_Name(): #[완료] 이름으로 송금
     global all_account
     print('이체 수수료는 1000원 입니다.')
     receiver_name = input('송금할 이름을 입력해주세요: ')# 송금할 이름 확인
@@ -187,23 +225,34 @@ def Transfer_With_Name(): #[미구현] 이름으로 송금
             if (all_account[customer_account][2] >= money + 1000): #현재잔액으로 송금할수 있을경우
                 all_account[customer_account][2] -= money + 1000
                 all_account[key][2] += money
-                Generate_Log(2, customer_account, money, key)
-                print('송금 완료')
+                Generate_Log(3, customer_account, money, key)
+                print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+                print(f'      송금이 성공적으로 완료되었습니다      ')
+                print(f'           입금액: {money}          ')
+                print(f'           잔액: {all_account[customer_account][2]}         ')
+                print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
                 input("계속하려면 Enter 키를 누르세요...")
                 lobby()
             else:
-                print('잔액부족')
+                print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+                print(f'           송금에 실패하였습니다           ')
+                print(f'                잔액부족          ')
+                print(f'           잔액: {all_account[customer_account][2]}         ')
+                print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
                 input("계속하려면 Enter 키를 누르세요...")
                 lobby()
 
 
-    print('등록되지 않은 이름 입니다.')        
+    print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+    print(f'           송금에 실패하였습니다           ')
+    print(f'            등록되지 않은 이름          ')
+    print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")       
     input("계속하려면 Enter 키를 누르세요...")
     lobby()
 
-def Transfer_With_Account(): #[미구현] 계좌번호로 송금
+def Transfer_With_Account(): #[완료] 계좌번호로 송금
     global all_account
     print('송금할 계좌번호를 입력해주세요: ', end= '')
     receiver_account = digit()
@@ -213,21 +262,34 @@ def Transfer_With_Account(): #[미구현] 계좌번호로 송금
         if (all_account[customer_account][2] >= money + 1000): #현재잔액으로 송금할수 있을경우
             all_account[customer_account][2] -= money + 1000
             all_account[receiver_account][2] += money
-            print('송금 완료')
+            Generate_Log(3, customer_account, money, receiver_account)
+            print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            print(f'      송금이 성공적으로 완료되었습니다      ')
+            print(f'           입금액: {money}          ')
+            print(f'           잔액: {all_account[customer_account][2]}         ')
+            print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
             input("계속하려면 Enter 키를 누르세요...")
             lobby()
         else:
-            print('잔액부족')
+            print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            print(f'           송금에 실패하였습니다           ')
+            print(f'                잔액부족          ')
+            print(f'           잔액: {all_account[customer_account][2]}         ')
+            print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
             input("계속하려면 Enter 키를 누르세요...")
             lobby()
     else:
-        print('존재하지않는 계좌번호 입니다')
+        print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+        print(f'           송금에 실패하였습니다           ')
+        print(f'         존재하지않는 계좌번호 입니다          ')
+        print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")    
+
     input("계속하려면 Enter 키를 누르세요...")
     lobby()
 
-def Transfer_Money(): #[분기점][기능완성] 6번 송금 분기점
+def Transfer_Money(): #[분기점][완료] 6번 송금 분기점
     global all_account
     print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
     print('        1.이름으로 송금')     
@@ -242,11 +304,14 @@ def Transfer_Money(): #[분기점][기능완성] 6번 송금 분기점
         Transfer_With_Account()
 
     else:
-        print('입력오류')
+        print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+        print('            오류')     
+        print('   유효하지 않은 입력입니다.')     
+        print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
         input("계속하려면 Enter 키를 누르세요...")
         lobby()
 
-def Administor_Manage():
+def Administor_Manage(): # 관리자 모드 마완
     global all_account
     global bank_log
     # 적당히 비밀번호 입력 
@@ -271,20 +336,11 @@ def Administor_Manage():
     input("계속하려면 Enter 키를 누르세요...")
     lobby()
 
-def Debug_print_accounts():
-    print("계좌 목록:")
-    for account_number, name in all_account.items():
-        print(f"계좌번호: {account_number}, 이름: {name}")
-    
-    input("계속하려면 Enter 키를 누르세요...")
-    lobby()
-
-def work(bank_work):
+def work(bank_work): # lobby분기점[완료]
     if bank_work == '1':
         Select_Make_Account()
 
     elif bank_work == '2':
-
         Delete_Account()
         
     elif bank_work == '3':
@@ -300,20 +356,26 @@ def work(bank_work):
         Transfer_Money()
 
     elif bank_work == '0':
+        logout()
         start()
     
     else:
-        input("유효하지 않은 입력입니다. \n계속하려면 Enter 키를 누르세요...")
+        print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+        print('            오류')     
+        print('   유효하지 않은 입력입니다.')     
+        print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+        input("계속하려면 Enter 키를 누르세요...")
         lobby()
 
-def lobby():
+def lobby(): #[완료]
     print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
     print("            지누 은행에 오신것을 환영합니다 ")
     print("            원하시는 서비스를 선택해 주세요. ")
     print("")
     print('       1.계좌 개설\t2.계좌 해지\t3.계좌 확인')
+    print('       4.계좌 입금\t5.개좌 출금\t6.계좌 이체')    
     print("")
-    print('       4.계좌 입금\t5.개좌 출금\t6.계좌 이체')
+    print("                                        0.로그아웃")
     print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
     print('로비', all_account)
     work(input())
@@ -326,7 +388,7 @@ def digit(): # 숫자만을 입력받아 반환하는 함수
         print(',를 제외한 정수만을 입력하세요: ')
         return digit()
 
-def login():
+def login(): #[완료]
     global customer_account
     print('계좌번호를 입력해주세요.: ', end = '')
     customer_account = digit()
@@ -335,22 +397,33 @@ def login():
             customer_password = input('비밀번호를 입력해주세요: ')
             if all_account[customer_account][1] == customer_password:
                 lobby()
-            print('비밀번호가 일치하지 않습니다.')
+
+            print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            print('            오류')     
+            print('비밀번호가 일치하지 않습니다.')   
+            print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
         customer_account = 0
-        print('비밀번호 입력을 5회 실패하였습니다.\n5분 후 다시 접속하여 주시길 바랍니다.')
+        print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+        print('    비밀번호 입력을 5회 실패하였습니다.')     
+        print('   5분 후 다시 접속하여 주시길 바랍니다.')   
+        print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
         input("계속하려면 Enter 키를 누르세요...")
         start()
     customer_account = 0
-    print('등록되지 않은 계좌번호입니다. 다시 시도하세요.')
+    print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+    print(f'        등록되지 않은 계좌번호입니다.           ')
+    print(f'             다시 시도하세요       ')
+    print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")    
     input("계속하려면 Enter 키를 누르세요...")
     start()
 
-def logout():
+def logout(): #[완료]
     global customer_account
     customer_account = 0
     start()
 
-def start():
+def start(): #[완료]
     global all_account
     all_account[10000] = ['test', '0000', 0, '개인계좌', '개인계좌'] #여기서 돈을 초기화 하니 디버깅시 주의
     all_account[10001] = ['test2', '0000', 0, 'EAE', 'U']

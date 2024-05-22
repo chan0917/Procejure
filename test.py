@@ -17,7 +17,7 @@ print("                     ")
 print(f"   잔액: {money}원                ")
 print("                     ")
 print("┗━━━━━━━━━━━━━━━━━━━┛")
-test = '\x1b[32m' + '       [이체] 00000 to 00001 nnnnnn원' + '\x1b[0m'
+test = f"\x1b[32m       [입금] {money}원\x1b[0m"
 print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
 print('            1.이름으로 송금')
 # print('            [입금] 00000 nnnnnn원')
