@@ -3,6 +3,8 @@ import time
 all_account = {} # 0.이름, 1.비밀번호, 2.잔액, 3.법인 대표, 4.담당직원
 account =[] # 모든 계좌번호
 customer_account = 0 #로그인 한뒤에 쓸 계좌번호
+bank_log = [] # 돈이 이동하는 기록들을 저장 
+
 def Generate_Random_Numbers():#[기능완성] 계좌번호 생성기
 
     new_number = random.randint(10000, 99999)  
@@ -11,6 +13,31 @@ def Generate_Random_Numbers():#[기능완성] 계좌번호 생성기
         return new_number
     else:
         return Generate_Random_Numbers()
+def Generate_Log(work, account, money, other_account = ''): 
+    """
+    로그를 생성하는 함수\n
+    자기 계좌, 금액, 다른사람 계좌\n
+    Work Input:
+        1: [입금]로그 생성.
+        2: [출금]로그 생성.
+        3: [이체]로그 생성.
+    """
+    global bank_log
+    print("DEBUG 로그 생성")
+    if work == 1:
+        deposit_string = f"\x1b[32m' + '       [입금] {account} {money}원' + '\x1b[0m"
+        bank_log.append(deposit_string)
+        print(deposit_string)
+
+    elif work == 2:
+        deposit_string = f"\x1b[32m' + '       [출금] {account} {money}원' + '\x1b[0m"
+        bank_log.append(deposit_string)
+        print(deposit_string)
+        
+    elif work == 3:
+        deposit_string = f"\x1b[32m' + '       [이체] {account} to {other_account} {money}' + '\x1b[0m"
+        bank_log.append(deposit_string)
+        print(deposit_string)
 
 def Make_Account(): #[기능완성] 1.1, 1.3번 개인 계좌 개설
     global all_account
@@ -74,7 +101,6 @@ def Delete_Account(): #[기능완성] 1.2번 개인 계좌 해지
         input("계속하려면 Enter 키를 누르세요...")
         lobby()    
     
-
 def Check_Account(): #[기능완성] 2번 개인 계좌 확인: 잔액
     print(f'잔액: {all_account[customer_account][2]}')
 
@@ -86,6 +112,7 @@ def Deposit_Account(): #[기능완성] 2번 개인 계좌 입금
     print('입금액을 입력하세요: ',end = '')
     cost = digit()
     all_account[customer_account][2] += cost
+    Generate_Log(1, customer_account, cost)
     print('입금 완료')
 
     input("계속하려면 Enter 키를 누르세요...")
@@ -96,6 +123,7 @@ def Withdraw_Account(): #[기능완성] 2번 개인 계좌 출금
     print('출금액을 입력사에요: ', end = '')
     cost = digit()
     all_account[customer_account][2] -= cost
+    Generate_Log(2, customer_account, cost)
     print('출금 완료')
     
     input("계속하려면 Enter 키를 누르세요...")
@@ -159,7 +187,7 @@ def Transfer_With_Name(): #[미구현] 이름으로 송금
             if (all_account[customer_account][2] >= money + 1000): #현재잔액으로 송금할수 있을경우
                 all_account[customer_account][2] -= money + 1000
                 all_account[key][2] += money
-
+                Generate_Log(2, customer_account, money, key)
                 print('송금 완료')
 
                 input("계속하려면 Enter 키를 누르세요...")
@@ -220,9 +248,10 @@ def Transfer_Money(): #[분기점][기능완성] 6번 송금 분기점
 
 def Administor_Manage():
     global all_account
+    global bank_log
     # 적당히 비밀번호 입력 
     print('은행 정산을 시작합니다.')     
-
+    print(bank_log)
     bank_accounts = len(all_account)
     idle_customer = 0
     corporate_customer = 0
@@ -236,6 +265,8 @@ def Administor_Manage():
         else:
             corporate_customer += 1
     
+    for item in bank_log:
+        print(item)
     print(bank_accounts, idle_customer, corporate_customer, bank_money)
     input("계속하려면 Enter 키를 누르세요...")
     lobby()
@@ -269,7 +300,7 @@ def work(bank_work):
         Transfer_Money()
 
     elif bank_work == '0':
-        Debug_print_accounts()
+        start()
     
     else:
         input("유효하지 않은 입력입니다. \n계속하려면 Enter 키를 누르세요...")

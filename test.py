@@ -17,7 +17,7 @@ print("                     ")
 print(f"   잔액: {money}원                ")
 print("                     ")
 print("┗━━━━━━━━━━━━━━━━━━━┛")
-
+test = '\x1b[32m' + '       [이체] 00000 to 00001 nnnnnn원' + '\x1b[0m'
 print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
 print('            1.이름으로 송금')
 # print('            [입금] 00000 nnnnnn원')
@@ -33,6 +33,7 @@ print('\x1b[32m' + '       [이체] 00000 to 00001 nnnnnn원' + '\x1b[0m')
 print('\x1b[31m' + '            [출금] 00000 nnnnnn원' + '\x1b[0m')
 print('\x1b[31m' + '            [출금] 00000 nnnnnn원' + '\x1b[0m')
 print('\x1b[32m' + '       [이체] 00000 to 00001 nnnnnn원' + '\x1b[0m')
+print(test)
 # print('\x1b[31m' + '        2.안녕' + '\x1b[0m')
 # print('\x1b[31m' + '        2.안녕' + '\x1b[0m')
 print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")    
@@ -45,7 +46,18 @@ my_dict = {
 }
 
 result_list = []
+def add(a, b):
+    """
+    두 숫자의 합을 반환하는 함수.
 
+    Args:
+        a (int, float): 첫 번째 숫자.
+        b (int, float): 두 번째 숫자.
+
+    Returns:
+        int, float: 입력된 두 숫자의 합.
+    """
+    return a + b
 # # 딕셔너리의 값을 하나씩 직접 비교
 # for item in my_dict:
 #     print(item)

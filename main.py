@@ -2,7 +2,7 @@ import random
 import time
 all_account = {} # 0.이름, 1.비밀번호, 2.잔액
 account =[] # 모든 계좌번호
-
+bank_log = []
 def Generate_Random_Numbers():#[기능완성] 계좌번호 생성기
 
     new_number = random.randint(10000, 99999)  
@@ -10,6 +10,29 @@ def Generate_Random_Numbers():#[기능완성] 계좌번호 생성기
         account.append(new_number)
         return new_number
 
+def Generate_Log(work, account, money, other_account = ''): 
+    """
+    로그를 생성하는 함수\n
+    자기 계좌, 금액, 다른사람 계좌\n
+    Work Input:
+        1: [입금]로그 생성.
+        2: [출금]로그 생성.
+        3: [이체]로그 생성.
+    """
+    global bank_log
+
+    if work == '1':
+        deposit_string = f"\x1b[32m' + '       [입금] {account} {money}원' + '\x1b[0m"
+        bank_log.append(deposit_string)
+
+    elif work == '2':
+        deposit_string = f"\x1b[32m' + '       [출금] {account} {money}원' + '\x1b[0m"
+        bank_log.append(deposit_string)
+        
+    elif work == '3':
+        deposit_string = f"\x1b[32m' + '       [이체] {account} to {other_account} {money}' + '\x1b[0m"
+        bank_log.append(deposit_string)
+    
 def Make_Account(): #[기능완성] 1.1, 1.3번 개인 계좌 개설
     global all_account
     print(all_account)
@@ -94,6 +117,7 @@ def Deposit_Account(): #[기능완성] 2번 개인 계좌 입금
         customer_info[2] += cost
         
         all_account[customer_account] = customer_info
+        Generate_Log(1, customer_account)
         print('입금 완료')
     else:
         print('존재하지않는 계좌번호 입니다')
@@ -118,7 +142,7 @@ def Withdraw_Account(): #[기능완성] 2번 개인 계좌 출금
     time.sleep(1)
     lobby() 
 
-def Make_Corporate_Account(): #[미구현] 3번
+def Make_Corporate_Account(): #[기능완성] 3번
     global all_account
     print('기능없음')
     time.sleep(1)
