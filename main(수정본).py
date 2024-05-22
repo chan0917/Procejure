@@ -311,12 +311,11 @@ def Transfer_Money(): #[분기점][완료] 6번 송금 분기점
         input("계속하려면 Enter 키를 누르세요...")
         lobby()
 
-def Administor_Manage(): # 관리자 모드 마완
+def Administor_Manage(): # [미완성] 관리자 모드 
     global all_account
     global bank_log
     # 적당히 비밀번호 입력 
     print('은행 정산을 시작합니다.')     
-    print(bank_log)
     bank_accounts = len(all_account)
     idle_customer = 0
     corporate_customer = 0
@@ -329,12 +328,22 @@ def Administor_Manage(): # 관리자 모드 마완
             idle_customer += 1
         else:
             corporate_customer += 1
-    
+
+    print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+    print('                 입출금 내역               ')
     for item in bank_log:
         print(item)
-    print(bank_accounts, idle_customer, corporate_customer, bank_money)
+
+    print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")  
+
+    print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+    print(f'         전체 고객 수: {bank_accounts}          ')
+    print(f'         개인고객 수: {idle_customer}          ')
+    print(f'         법인고객 수: {corporate_customer}         ')
+    print(f'         은행 잔고: {bank_money}         ')
+    print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
     input("계속하려면 Enter 키를 누르세요...")
-    lobby()
+    start()
 
 def work(bank_work): # lobby분기점[완료]
     if bank_work == '1':
@@ -377,7 +386,7 @@ def lobby(): #[완료]
     print("")
     print("                                        0.로그아웃")
     print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-    print('로비', all_account)
+
     work(input())
 
 def digit(): # 숫자만을 입력받아 반환하는 함수
