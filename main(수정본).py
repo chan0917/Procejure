@@ -32,7 +32,7 @@ def Generate_Log(work, account, money, other_account = ''): #[완료] 로그생�
         bank_log.append(deposit_string)
         
     elif work == 3:
-        deposit_string = f"\x1b[32m       [이체] {account} to {other_account} {money}\x1b[0m"
+        deposit_string = f"\x1b[32m       [이체] {account} to {other_account} {money}원\x1b[0m"
         bank_log.append(deposit_string)
 
 def Make_Account(): #[완료] 1.1, 1.3번 개인 계좌 개설
@@ -49,19 +49,22 @@ def Make_Account(): #[완료] 1.1, 1.3번 개인 계좌 개설
             checking_student = str(input("학생이신가요? (y/n) "))
             if checking_student == ('y' or "Y"):      #학생일 경우
                 first_cost += 10000 
+                if_student = '학생'
                 break
             elif checking_student == ('n' or "N"):
+                if_student = "직장인"
                 break
             else:
                 print('올바른 형식이 아닙니다.')
 
         accountNumber = Generate_Random_Numbers()
-        all_account[accountNumber] = [customer_name,customer_password, first_cost, '개인계좌', '개인계좌']
+        all_account[accountNumber] = [customer_name,customer_password, first_cost, '개인계좌', '개인계좌',if_student]
         print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
         print(f'            계좌번호: {accountNumber}')
         print(f'            이름: {customer_name}')
         print(f'            비밀번호: {customer_password}')
         print(f'            잔액: {first_cost}')
+        print(f'            분류: {if_student}')
         print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
     else: 
@@ -131,13 +134,18 @@ def Deposit_Account(): #[완료] 2번 개인 계좌 입금
     global all_account
     print('입금액을 입력하세요: ',end = '')
     cost = digit()
-    all_account[customer_account][2] += cost
-    Generate_Log(1, customer_account, cost)
-    print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-    print(f'      입금이 성공적으로 완료되었습니다      ')
-    print(f'           입금액: {cost}          ')
-    print(f'           잔액: {all_account[customer_account][2]}         ')
-    print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+    
+    if cost >= 10000:
+        all_account[customer_account][2] += cost
+        Generate_Log(1, customer_account, cost)
+        print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+        print(f'      입금이 성공적으로 완료되었습니다      ')
+        print(f'           입금액: {cost}          ')
+        print(f'           잔액: {all_account[customer_account][2]}         ')
+        print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+    else:
+        print('10,000원 단위로 입력해주세요.')
+    
 
     input("계속하려면 Enter 키를 누르세요...")
     lobby()    
@@ -146,21 +154,24 @@ def Withdraw_Account(): #[완료] 2번 개인 계좌 출금
     global all_account
     print('출금액을 입력사에요: ', end = '')
     cost = digit()
-    if (all_account[customer_account][2] >= cost):
+    if cost >= 10000:
+        if (all_account[customer_account][2] >= cost):
 
-        all_account[customer_account][2] -= cost
-        Generate_Log(2, customer_account, cost)
-        print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-        print(f'      출금이 성공적으로 완료되었습니다      ')
-        print(f'           입금액: {cost}          ')
-        print(f'           잔액: {all_account[customer_account][2]}         ')
-        print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+            all_account[customer_account][2] -= cost
+            Generate_Log(2, customer_account, cost)
+            print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            print(f'      출금이 성공적으로 완료되었습니다      ')
+            print(f'           입금액: {cost}          ')
+            print(f'           잔액: {all_account[customer_account][2]}         ')
+            print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+        else:
+            print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            print(f'           출금에 실패하였습니다           ')
+            print(f'                잔액부족          ')
+            print(f'           잔액: {all_account[customer_account][2]}         ')
+            print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
     else:
-        print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-        print(f'           출금에 실패하였습니다           ')
-        print(f'                잔액부족          ')
-        print(f'           잔액: {all_account[customer_account][2]}         ')
-        print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+        print('10,000원 단위로 입력해주세요.')
 
     input("계속하려면 Enter 키를 누르세요...")
     lobby() 
@@ -179,7 +190,7 @@ def Make_Corporate_Account(): #[완료] 3번
         first_cost += 100000 
 
         accountNumber = Generate_Random_Numbers()
-        all_account[accountNumber] = [customer_name,customer_password, first_cost, master_name, administer_name]
+        all_account[accountNumber] = [customer_name,customer_password, first_cost, master_name, administer_name, "사업가"]
         print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
         print(f'            계좌번호: {accountNumber}')
         print(f'            이름: {customer_name}')
@@ -187,6 +198,7 @@ def Make_Corporate_Account(): #[완료] 3번
         print(f'            관리자 이름: {administer_name}')
         print(f'            비밀번호: {customer_password}')
         print(f'            잔액: {first_cost}')
+        print(f'            잔액: 사업가')
         print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
     else: 
