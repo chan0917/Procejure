@@ -37,7 +37,7 @@ def Generate_Log(work, account, money, other_account = ''): #[완료] 로그생�
 
 def Make_Account(): #[완료] 1.1, 1.3번 개인 계좌 개설
     global all_account
-    print(all_account)
+    ##print(all_account)
     customer_name = str(input('이름을 입력하세요: '))
     customer_password = (input('비밀번호를 설정하세요: '))
     print('최초 입금액 10,000원 이상을 입금하세요.')
@@ -106,7 +106,7 @@ def Delete_Account(): #[완료] 1.2번 개인 계좌 해지
             print('')
 
             input("계속하려면 Enter 키를 누르세요...")
-            lobby()
+            start()
     else:
         print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
         print(f'           비밀번호가 틀렸습니다          ')
@@ -114,7 +114,7 @@ def Delete_Account(): #[완료] 1.2번 개인 계좌 해지
         print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
         input("계속하려면 Enter 키를 누르세요...")
-        start()    
+        lobby()    
     
 def Check_Account(): #[완료] 2번 개인 계좌 확인: 잔액
     print(f'잔액: {all_account[customer_account][2]}')
@@ -210,6 +210,11 @@ def Select_Make_Account(): #[분기점][완료] 계좌 개설 분기점
     elif bank_work == '2':
 
         Make_Corporate_Account()
+    elif bank_work == '3':
+        if customer_account != 0:
+            lobby()
+        else:
+            start()
         
     else:
         print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
@@ -218,7 +223,11 @@ def Select_Make_Account(): #[분기점][완료] 계좌 개설 분기점
         print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
         input("계속하려면 Enter 키를 누르세요...")
 
-        start()
+        if customer_account != 0:
+            print('로비 이동')
+            lobby()
+        else:
+            start()
 
 def Transfer_With_Name(): #[완료] 이름으로 송금
     global all_account
@@ -440,8 +449,8 @@ def logout(): #[완료]
 
 def start(): #[완료]
     global all_account
-    all_account[10000] = ['test', '0000', 0, '개인계좌', '개인계좌'] #여기서 돈을 초기화 하니 디버깅시 주의
-    all_account[10001] = ['test2', '0000', 0, 'EAE', 'U']
+    ##all_account[10000] = ['test', '0000', 0, '개인계좌', '개인계좌'] #여기서 돈을 초기화 하니 디버깅시 주의
+    ##all_account[10001] = ['test2', '0000', 0, 'EAE', 'U']
 
     print("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
     print("            지누 은행에 오신것을 환영합니다 ")
@@ -454,8 +463,11 @@ def start(): #[완료]
         login()
     elif bank_work == '2':
         Select_Make_Account()
-    else:
+    elif bank_work == '3':
         Administor_Manage()
+    else:
+        print('올바르지 않은 입력입니다.')
+        start()
 
 start()
 
