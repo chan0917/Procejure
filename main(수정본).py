@@ -45,9 +45,15 @@ def Make_Account(): #[완료] 1.1, 1.3번 개인 계좌 개설
 
     if first_cost >= 10000:
             
-        checking_student = str(input("학생이신가요? (y/n) "))
-        if checking_student == ('y' or "Y"):      #학생일 경우
-            first_cost += 10000 
+        while True:
+            checking_student = str(input("학생이신가요? (y/n) "))
+            if checking_student == ('y' or "Y"):      #학생일 경우
+                first_cost += 10000 
+                break
+            elif checking_student == ('n' or "N"):
+                break
+            else:
+                print('올바른 형식이 아닙니다.')
 
         accountNumber = Generate_Random_Numbers()
         all_account[accountNumber] = [customer_name,customer_password, first_cost, '개인계좌', '개인계좌']
